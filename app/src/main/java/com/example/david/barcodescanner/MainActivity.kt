@@ -1,21 +1,32 @@
 package com.example.david.barcodescanner
 
-import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 
 class MainActivity : AppCompatActivity() {
 
+    private var listScanner : String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        openMainFragment()
+    }
 
-        supportFragmentManager.beginTransaction().replace(R.id.lyFragmentContainer, MainFragment()).addToBackStack("mainFragment").commit()
+    fun getListScanner(): String{
+        return if (listScanner != null){
+            listScanner
+        }else{
+            getString(R.string.debe_escanar_un_producto)
+        }
+    }
+
+    fun setListScanner(scanner : String){
+        this.listScanner = scanner
     }
 
     fun openListFragment(result : String){
         supportFragmentManager.beginTransaction().replace(R.id.lyFragmentContainer, ListFragment.newInstance(result)).addToBackStack("listFragment").commit()
-
     }
 
     fun openMainFragment(){
@@ -23,6 +34,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openScanActivity(){
-        startActivity(Intent(this@MainActivity, ScannerActivity::class.java))
+        supportFragmentManager.beginTransaction().replace(R.id.lyFragmentContainer, ScannerFragment()).addToBackStack("scannerFragment").commit()
     }
 }
